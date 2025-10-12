@@ -1,27 +1,26 @@
-const CACHE_NAME = "pedometer-cache-v1";
+const CACHE = "step-tracker-v1";
 const ASSETS = [
-  "./",
-  "./index.html",
-  "./tracker.html",
-  "./history.html",
-  "./css/style.css",
-  "./js/main.js",
-  "./js/tracker.js",
-  "./js/storage.js",
-  "./manifest.json",
+  "/",
+  "/index.html",
+  "/tracker.html",
+  "/history.html",
+  "/settings.html",
+  "/css/style.css",
+  "/js/main.js",
+  "/js/tracker.js",
+  "/js/ui-charts.js",
+  "/manifest.json",
 ];
 
-self.addEventListener("install", (ev) => {
-  ev.waitUntil(caches.open(CACHE_NAME).then((cache) => cache.addAll(ASSETS)));
-  self.skipWaiting();
+self.addEventListener("install", (e) => {
+  e.waitUntil(caches.open(CACHE).then((c) => c.addAll(ASSETS)));
 });
-
-self.addEventListener("activate", (ev) => {
-  ev.waitUntil(self.clients.claim());
-});
-
-self.addEventListener("fetch", (ev) => {
-  ev.respondWith(
-    caches.match(ev.request).then((res) => res || fetch(ev.request))
+self.addEventListener("fetch", (e) => {
+  e.respondWith(
+    caches
+      .match(e.request)
+      .then(
+        (r) => r || fetch(e.request).catch(() => caches.match("/index.html"))
+      )
   );
 });

@@ -2,42 +2,45 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Step counter - Dashboard</title>
-    <meta name="theme-color" content="#4CAF50" />
+    <title>Step Tracker - Dashboard</title>
     <link rel="manifest" href="manifest.json" />
     <link rel="stylesheet" href="css/style.css" />
+    <script defer src="js/main.js"></script>
   </head>
   <body>
-    <header class="app-header">
-      <h1>Step Counter</h1>
-      <nav>
-        <a href="tracker.html">Tracker</a> | <a href="history.html">History</a>
-      </nav>
+    <header>
+      <h1>🏃 Step Tracker</h1>
+      <button id="theme-toggle">🌓</button>
     </header>
 
-    <main class="container">
-      <section class="card">
-        <h2>Today - <span id="today-date"></span></h2>
-        <div id="steps" class="big">0</div>
-        <div class="progress" aria-hidden="true"><div id="bar"></div></div>
-        <div class="goal-row">
-          <label
-            >Daily goal:
-            <input type="number" min="100" value="5000" id="goal-input"
-          /></label>
-          <button id="save-goal">Save</button>
+    <main id="dashboard">
+      <section id="summary">
+        <h2>Today</h2>
+        <p>Steps: <span id="steps-today">0</span></p>
+        <p>Goal: <span id="goal">5000</span></p>
+        <div id="progress">
+          <div id="bar"></div>
         </div>
-        <div class="controls">
-          <a href="tracker.html" class="btn">Go to Live Tracker</a>
-          <button id="export-btn">Export Data</button>
-        </div>
-        <p id="quote" class="quote">Offline-ready. Installable PWA.</p>
       </section>
+
+      <section id="weather">
+        <h2>Weather</h2>
+        <p id="weather-info">Loading...</p>
+      </section>
+
+      <section id="achievements">
+        <h2>Achievements</h2>
+        <ul id="ach-list"></ul>
+      </section>
+
+      <canvas id="chart" width="300" height="200"></canvas>
     </main>
 
-    <script src="js/storage.js"></script>
-    <script src="js/main.js"></script>
+    <footer>
+      <a href="tracker.html">Tracker</a>
+      <a href="history.html">History</a>
+      <a href="settings.html">Settings</a>
+    </footer>
   </body>
 </html>
