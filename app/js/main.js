@@ -1,43 +1,32 @@
-if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("service-worker.js");
-}
-
-document.getElementById("theme-toggle").onclick = () => {
-  document.body.classList.toggle("dark");
-  localStorage.setItem(
-    "theme",
-    document.body.classList.contains("dark") ? "dark" : "light"
-  );
-};
-
-if (localStorage.getItem("theme") === "dark")
-  document.body.classList.add("dark");
-
-const stepsToday = parseInt(localStorage.getItem("steps-today") || "0");
-const goal = parseInt(localStorage.getItem("goal") || "5000");
-document.getElementById("steps-today").textContent = stepsToday;
-document.getElementById("goal").textContent = goal;
-document.getElementById("bar").style.width =
-  Math.min((stepsToday / goal) * 100, 100) + "%";
-
-async function loadWeather() {
-  try {
-    const pos = await new Promise((res, rej) =>
-      navigator.geolocation.getCurrentPosition(res, rej)
-    );
-    const data = await fetch(
-      `https://api.open-meteo.com/v1/forecast?latitude=${pos.coords.latitude}&longitude=${pos.coords.longitude}&current_weather=true`
-    ).then((r) => r.json());
-    const w = data.current_weather;
-    document.getElementById(
-      "weather-info"
-    ).textContent = `${w.temperature}°C, ${w.weathercode}`;
-    localStorage.setItem("last-weather", JSON.stringify(w));
-  } catch {
-    const w = JSON.parse(localStorage.getItem("last-weather") || "{}");
-    document.getElementById("weather-info").textContent = w.temperature
-      ? `${w.temperature}°C (offline)`
-      : "No weather data";
+// js/main.js
+(function () {
+  // user id
+  if (!localStorage.getItem("pedometer.userId")) {
+    const id =
+      "u_" +
+      [...crypto.getRandomValues(new Uint8Array(12))]
+        .map((b) => b.toString(16).padStart(2, "0"))
+        .join("");
+    localStorage.setItem("pedometer.userId", id);
   }
-}
-loadWeather();
+  const USER_ID = localStorage.getItem("pedometer.userId");
+  window.PEDOMETER = { USER_ID };
+
+  // theme
+  const saved = localStorage.getItem("pedometer.theme");
+  const prefers =
+    window.matchMedia &&
+    window.matchMedia("(prefers-color-scheme:dark)").matches;
+  document.documentElement.setAttribute(
+    "data-theme",
+    saved || (prefers ? "dark" : "light")
+  );
+  // install sw
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("/service-worker.js").catch(console.warn);
+  }
+
+  // Listen online/offline
+  window.addEventListener("online", () => console.log("online"));
+  window.addEventListener("offline", () => console.log("offline"));
+})();

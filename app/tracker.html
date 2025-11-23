@@ -1,23 +1,50 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Live Tracker</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Tracker</title>
+    <link rel="manifest" href="manifest.webmanifest" />
     <link rel="stylesheet" href="css/style.css" />
+    <script defer src="js/idb-helpers.js"></script>
+    <script defer src="js/storage-facade.js"></script>
+    <script defer src="js/worker-rpm.js"></script>
     <script defer src="js/tracker.js"></script>
+    <script defer src="js/main.js"></script>
   </head>
   <body>
-    <header><h1>Live Tracker</h1></header>
-    <main>
-      <p>Steps: <span id="live-steps">0</span></p>
-      <p>Distance: <span id="distance">0</span> m</p>
-      <p>Speed: <span id="speed">0</span> m/s</p>
-      <p>Elapsed: <span id="elapsed">0:00</span></p>
-    </main>
-    <footer>
-      <a href="index.html">Dashboard</a>
-      <a href="history.html">History</a>
-    </footer>
+    <nav>
+      <a href="index.html">Home</a> | <a href="dashboard.html">Dashboard</a>
+    </nav>
+    <div class="container">
+      <h1>Live Tracker</h1>
+
+      <div class="card">
+        <div class="metric">
+          <div class="label">Steps</div>
+          <div class="value big" id="live-steps">0</div>
+        </div>
+        <div class="row">
+          <div class="metric">
+            <div class="label">Distance (m)</div>
+            <div class="value" id="live-distance">0</div>
+          </div>
+          <div class="metric">
+            <div class="label">Pace</div>
+            <div class="value" id="live-pace">--</div>
+          </div>
+        </div>
+
+        <div class="row" style="margin-top: 1rem">
+          <button id="start-track" class="btn">Start</button>
+          <button id="pause-track" class="btn" disabled>Pause</button>
+          <button id="stop-track" class="btn" disabled>Stop & Save</button>
+        </div>
+
+        <label style="display: block; margin-top: 10px"
+          ><input id="use-gps" type="checkbox" /> Use GPS (battery)</label
+        >
+      </div>
+    </div>
   </body>
 </html>

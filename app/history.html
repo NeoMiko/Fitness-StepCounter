@@ -1,21 +1,31 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>History</title>
+    <link rel="manifest" href="manifest.webmanifest" />
     <link rel="stylesheet" href="css/style.css" />
-    <script defer src="js/ui-charts.js"></script>
+    <script defer src="js/idb-helpers.js"></script>
+    <script defer src="js/storage-facade.js"></script>
+    <script defer src="js/history.js"></script>
+    <script defer src="js/main.js"></script>
   </head>
   <body>
-    <header><h1>History</h1></header>
-    <main>
-      <canvas id="history-chart" width="350" height="200"></canvas>
-      <button id="export">Export Data</button>
-    </main>
-    <footer>
-      <a href="index.html">Dashboard</a>
+    <nav>
+      <a href="index.html">Home</a> | <a href="dashboard.html">Dashboard</a> |
       <a href="tracker.html">Tracker</a>
-    </footer>
+    </nav>
+    <div class="container">
+      <h1>History</h1>
+      <div class="card">
+        <canvas id="history-chart" width="320" height="140"></canvas>
+        <ul id="sessions-list"></ul>
+        <div class="row">
+          <button id="export-data" class="btn">Export JSON</button>
+          <button id="clear-data" class="btn">Clear Data</button>
+        </div>
+      </div>
+    </div>
   </body>
 </html>
