@@ -1,46 +1,24 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Step Tracker - Dashboard</title>
-    <link rel="manifest" href="manifest.json" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Step Tracker</title>
+    <link rel="manifest" href="manifest.webmanifest" />
     <link rel="stylesheet" href="css/style.css" />
     <script defer src="js/main.js"></script>
   </head>
   <body>
-    <header>
+    <div class="container">
       <h1>Step Tracker</h1>
-      <button id="theme-toggle">🌓</button>
-    </header>
-
-    <main id="dashboard">
-      <section id="summary">
-        <h2>Today</h2>
-        <p>Steps: <span id="steps-today">0</span></p>
-        <p>Goal: <span id="goal">5000</span></p>
-        <div id="progress">
-          <div id="bar"></div>
-        </div>
-      </section>
-
-      <section id="weather">
-        <h2>Weather</h2>
-        <p id="weather-info">Loading...</p>
-      </section>
-
-      <section id="achievements">
-        <h2>Achievements</h2>
-        <ul id="ach-list"></ul>
-      </section>
-
-      <canvas id="chart" width="300" height="200"></canvas>
-    </main>
-
-    <footer>
-      <a href="tracker.html">Tracker</a>
-      <a href="history.html">History</a>
-      <a href="settings.html">Settings</a>
-    </footer>
+      <p>Installable PWA. Track steps, distance and sync to cloud.</p>
+      <div class="row">
+        <a href="dashboard.html" class="btn">Open Dashboard</a>
+        <a href="tracker.html" class="btn">Start Tracking</a>
+      </div>
+      <p class="muted">
+        Works offline. Use Chrome on Android for best PWA support.
+      </p>
+    </div>
   </body>
 </html>

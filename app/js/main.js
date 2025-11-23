@@ -1,6 +1,4 @@
-// js/main.js
 (function () {
-  // user id
   if (!localStorage.getItem("pedometer.userId")) {
     const id =
       "u_" +
@@ -12,7 +10,6 @@
   const USER_ID = localStorage.getItem("pedometer.userId");
   window.PEDOMETER = { USER_ID };
 
-  // theme
   const saved = localStorage.getItem("pedometer.theme");
   const prefers =
     window.matchMedia &&
@@ -21,12 +18,11 @@
     "data-theme",
     saved || (prefers ? "dark" : "light")
   );
-  // install sw
+
   if ("serviceWorker" in navigator) {
     navigator.serviceWorker.register("/service-worker.js").catch(console.warn);
   }
 
-  // Listen online/offline
   window.addEventListener("online", () => console.log("online"));
   window.addEventListener("offline", () => console.log("offline"));
 })();
