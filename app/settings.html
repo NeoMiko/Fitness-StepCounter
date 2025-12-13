@@ -5,24 +5,44 @@
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Settings</title>
     <link rel="stylesheet" href="css/style.css" />
-    <script defer src="js/main.js"></script>
+    <script src="js/main.js" type="module"></script>
   </head>
   <body>
     <nav>
       <a href="index.html">Home</a> | <a href="dashboard.html">Dashboard</a>
     </nav>
     <div class="container">
-      <h1>Settings</h1>
-      <label
-        >Daily goal:
-        <input id="goal-input" type="number" min="100" value="5000"
-      /></label>
-      <div style="margin-top: 1rem">
-        <button id="save-goal" class="btn">Save Goal</button>
-      </div>
-      <div style="margin-top: 1rem">
-        <button id="clear-storage" class="btn">Clear Local Data</button>
-      </div>
+      <section class="card settings-card">
+        <h1>Settings</h1>
+        <label
+          >Daily goal:
+          <input id="goal-input" type="number" min="100" value="5000"
+        /></label>
+        <div style="margin-top: 1rem">
+          <button id="save-goal" class="btn">Save Goal</button>
+        </div>
+        <div style="margin-top: 1rem">
+          <button id="clear-storage" class="btn">Clear Local Data</button>
+        </div>
+      </section>
+
+      <section class="card settings-card">
+        <div class="setting-row">
+          <div class="setting-label">
+            <span class="setting-title">Theme</span>
+            <span class="setting-desc">Light / Dark mode</span>
+          </div>
+
+          <button
+            id="theme-toggle"
+            class="theme-toggle"
+            aria-label="Toggle dark mode"
+          >
+            <span class="toggle-icon" aria-hidden="true">🌙</span>
+            <span class="toggle-text">Dark Mode</span>
+          </button>
+        </div>
+      </section>
     </div>
     <script>
       document.addEventListener("DOMContentLoaded", () => {
@@ -44,5 +64,6 @@
         };
       });
     </script>
+    <script src="js/settings.js" type="module"></script>
   </body>
 </html>

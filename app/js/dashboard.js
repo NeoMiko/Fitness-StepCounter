@@ -1,14 +1,12 @@
 document.addEventListener("DOMContentLoaded", async () => {
   const goal = Number(localStorage.getItem("pedometer.goal") || 5000);
   document.getElementById("today-goal").textContent = `Goal: ${goal}`;
-  // load today's steps local
   const today = new Date().toISOString().split("T")[0];
   const steps = await storage.getDaily(today);
   document.getElementById("today-steps").textContent = steps || 0;
   const pct = Math.min(100, Math.round(((steps || 0) / goal) * 100));
   document.getElementById("bar").style.width = pct + "%";
 
-  // weather: try Netlify function proxy then fallback to last cached
   try {
     const pos = await new Promise((res, rej) =>
       navigator.geolocation.getCurrentPosition(res, rej)
@@ -48,7 +46,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     console.warn("ranking error", e);
   }
 
-  // week chart from local daily map
   const daily = await IDB.getAll("daily");
   const map = {};
   daily.forEach((d) => (map[d.date] = d.steps));

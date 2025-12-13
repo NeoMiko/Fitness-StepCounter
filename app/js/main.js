@@ -1,28 +1,30 @@
-(function () {
-  if (!localStorage.getItem("pedometer.userId")) {
-    const id =
-      "u_" +
-      [...crypto.getRandomValues(new Uint8Array(12))]
-        .map((b) => b.toString(16).padStart(2, "0"))
-        .join("");
-    localStorage.setItem("pedometer.userId", id);
+import { storage } from "./storage-facade.js";
+
+(async function initTheme() {
+  try {
+    const savedTheme =
+      (await storage.getMeta("theme")) ||
+      localStorage.getItem("theme") ||
+      "light";
+
+    document.documentElement.setAttribute("data-theme", savedTheme);
+  } catch (err) {
+    const fallbackTheme = localStorage.getItem("theme") || "light";
+    document.documentElement.setAttribute("data-theme", fallbackTheme);
   }
-  const USER_ID = localStorage.getItem("pedometer.userId");
-  window.PEDOMETER = { USER_ID };
-
-  const saved = localStorage.getItem("pedometer.theme");
-  const prefers =
-    window.matchMedia &&
-    window.matchMedia("(prefers-color-scheme:dark)").matches;
-  document.documentElement.setAttribute(
-    "data-theme",
-    saved || (prefers ? "dark" : "light")
-  );
-
-  if ("serviceWorker" in navigator) {
-    navigator.serviceWorker.register("/service-worker.js").catch(console.warn);
-  }
-
-  window.addEventListener("online", () => console.log("online"));
-  window.addEventListener("offline", () => console.log("offline"));
 })();
+
+document.addEventListener("DOMContentLoaded", () => {
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("/service-worker.js");
+  }
+  let userId = localStorage.getItem("userId");
+  if (!userId) {
+    userId = crypto.randomUUID();
+    localStorage.setItem("userId", userId);
+  }
+
+  window.APP_CONTEXT = {
+    userId,
+  };
+});

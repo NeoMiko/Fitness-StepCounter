@@ -41,7 +41,6 @@ function startSession() {
   document.getElementById("pause-track").disabled = false;
   document.getElementById("stop-track").disabled = false;
 
-  // devicemotion
   const handler = (e) => {
     const a = e.accelerationIncludingGravity || e.acceleration;
     if (!a) return;
@@ -62,7 +61,6 @@ function startSession() {
   window.addEventListener("devicemotion", handler);
   window._pedMotionHandler = handler;
 
-  // GPS if requested
   const useGps =
     document.getElementById("use-gps") &&
     document.getElementById("use-gps").checked;

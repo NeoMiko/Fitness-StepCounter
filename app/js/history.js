@@ -31,7 +31,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   });
 
-  // draw simple chart by date
   const map = {};
   sessions.forEach((s) => {
     const d = new Date(s.ts).toISOString().split("T")[0];
