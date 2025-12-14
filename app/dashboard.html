@@ -12,32 +12,38 @@
 
   <body>
     <nav>
-      <a href="index.html">Home</a> | <a href="tracker.html">Tracker</a> |
-      <a href="history.html">History</a> |
-      <a href="settings.html">Settings</a>
+      <a href="index.html">🏠 Home</a>
+      <a href="tracker.html">▶️ Tracker</a>
+      <a href="history.html">⏳ History</a>
+      <a href="settings.html">⚙️ Settings</a>
     </nav>
 
     <div class="container">
       <h1>Dashboard</h1>
 
-      <div class="card">
-        <h3>Today</h3>
-        <div class="value" id="today-steps">0</div>
+      <div class="card metric-card">
+        <h3>Twoje Postępy Dzisiaj</h3>
+        <div class="row goal-display">
+          <div class="value big" id="today-steps">0</div>
+          <div class="muted" id="today-goal">Goal: 5000</div>
+        </div>
         <div id="progress"><div id="bar"></div></div>
-        <p id="today-goal">Goal: 5000</p>
       </div>
 
-      <div class="card">
-        <h3>Weather</h3>
-        <p id="weather-info">Loading...</p>
+      <div class="card chart-card">
+        <h3>Tygodniowa Aktywność</h3>
+        <canvas id="week-chart" width="320" height="180"></canvas>
       </div>
 
-      <div class="card">
-        <h3>Leaderboard</h3>
+      <div class="card weather-card">
+        <h3>☀️ Lokalna Pogoda</h3>
+        <p id="weather-info" class="muted">Ładowanie...</p>
+      </div>
+
+      <div class="card leaderboard-card">
+        <h3>🥇 Ranking Globalny</h3>
         <ul id="leaderboard"></ul>
       </div>
-
-      <canvas id="week-chart" width="320" height="140"></canvas>
     </div>
   </body>
 </html>

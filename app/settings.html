@@ -7,31 +7,38 @@
     <link rel="stylesheet" href="css/style.css" />
     <link rel="manifest" href="/manifest.webmanifest" />
     <script src="js/main.js" type="module"></script>
+    <script src="js/settings.js" type="module"></script>
   </head>
   <body>
     <nav>
-      <a href="index.html">Home</a> | <a href="dashboard.html">Dashboard</a>
+      <a href="index.html">🏠 Home</a>
+      <a href="dashboard.html">📊 Dashboard</a>
+      <a href="tracker.html">▶️ Tracker</a>
+      <a href="history.html">⏳ History</a>
     </nav>
     <div class="container">
+      <h1>⚙️ Ustawienia</h1>
+
       <section class="card settings-card">
-        <h1>Settings</h1>
+        <h3>Cele i Użytkownik</h3>
         <label
-          >Daily goal:
+          >Cel dzienny (kroki):
           <input id="goal-input" type="number" min="100" value="5000"
         /></label>
         <div style="margin-top: 1rem">
-          <button id="save-goal" class="btn">Save Goal</button>
+          <button id="save-goal" class="btn primary-action">Zapisz Cel</button>
         </div>
-        <div style="margin-top: 1rem">
-          <button id="clear-storage" class="btn">Clear Local Data</button>
-        </div>
+        <p class="muted" style="margin-top: 15px" id="user-id-display">
+          ID Użytkownika: Loading...
+        </p>
       </section>
 
       <section class="card settings-card">
+        <h3>Motyw</h3>
         <div class="setting-row">
           <div class="setting-label">
-            <span class="setting-title">Theme</span>
-            <span class="setting-desc">Light / Dark mode</span>
+            <span class="setting-title">Wybór Motywu</span>
+            <span class="setting-desc muted">Przełączanie jasny / ciemny</span>
           </div>
 
           <button
@@ -44,27 +51,18 @@
           </button>
         </div>
       </section>
+
+      <section class="card settings-card">
+        <h3>Zarządzanie Danymi</h3>
+        <p class="muted">
+          Spowoduje to usunięcie wszystkich lokalnych kroków, sesji i ustawień.
+        </p>
+        <div style="margin-top: 1rem">
+          <button id="clear-storage" class="btn secondary-btn">
+            🗑️ Wyczyść Lokalne Dane
+          </button>
+        </div>
+      </section>
     </div>
-    <script>
-      document.addEventListener("DOMContentLoaded", () => {
-        const g = localStorage.getItem("pedometer.goal") || "5000";
-        document.getElementById("goal-input").value = g;
-        document.getElementById("save-goal").onclick = () => {
-          localStorage.setItem(
-            "pedometer.goal",
-            document.getElementById("goal-input").value
-          );
-          alert("Goal saved");
-        };
-        document.getElementById("clear-storage").onclick = () => {
-          if (confirm("Clear all local data?")) {
-            indexedDB.deleteDatabase("pedometer-db");
-            localStorage.removeItem("pedometer.userId");
-            alert("Cleared");
-          }
-        };
-      });
-    </script>
-    <script src="js/settings.js" type="module"></script>
   </body>
 </html>

@@ -3,21 +3,35 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Step Tracker</title>
+    <title>Step Tracker PWA</title>
     <link rel="manifest" href="/manifest.webmanifest" />
     <link rel="stylesheet" href="css/style.css" />
     <script type="module" src="js/main.js"></script>
   </head>
   <body>
-    <div class="container">
-      <h1>Step Tracker</h1>
-      <p>Installable PWA. Track steps, distance and sync to cloud.</p>
-      <div class="row">
-        <a href="dashboard.html" class="btn">Open Dashboard</a>
-        <a href="tracker.html" class="btn">Start Tracking</a>
+    <nav>
+      <a href="dashboard.html">📊 Dashboard</a>
+      <a href="tracker.html">▶️ Tracker</a>
+      <a href="history.html">⏳ History</a>
+      <a href="settings.html">⚙️ Settings</a>
+    </nav>
+
+    <div class="container welcome-container">
+      <h1>Step Tracker PWA</h1>
+      <p class="muted" style="margin-bottom: 30px; font-size: 16px">
+        Zainstaluj aplikację na swoim urządzeniu. Śledź kroki, dystans i
+        synchronizuj dane z chmurą.
+      </p>
+
+      <div class="row" style="gap: 15px">
+        <a href="dashboard.html" class="btn">Otwórz Dashboard</a>
+        <a href="tracker.html" class="btn primary-action"
+          >Rozpocznij Tracking</a
+        >
       </div>
-      <p class="muted">
-        Works offline. Use Chrome on Android for best PWA support.
+
+      <p class="muted" style="margin-top: 20px">
+        Działa offline. Rekomendowana dla Chrome/Edge na Androidzie/PC.
       </p>
     </div>
   </body>

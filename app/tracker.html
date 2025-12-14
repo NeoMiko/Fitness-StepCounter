@@ -12,36 +12,47 @@
   </head>
   <body>
     <nav>
-      <a href="index.html">Home</a> | <a href="dashboard.html">Dashboard</a>
+      <a href="index.html">🏠 Home</a>
+      <a href="dashboard.html">📊 Dashboard</a>
+      <a href="history.html">⏳ History</a>
+      <a href="settings.html">⚙️ Settings</a>
     </nav>
     <div class="container">
-      <h1>Live Tracker</h1>
+      <h1>▶️ Tracker na Żywo</h1>
 
-      <div class="card">
-        <div class="metric">
-          <div class="label">Steps</div>
+      <div class="card live-metrics">
+        <div class="metric big-metric">
+          <div class="label">Kroki w Sesji</div>
           <div class="value big" id="live-steps">0</div>
         </div>
-        <div class="row">
+
+        <div class="row stats-row">
           <div class="metric">
-            <div class="label">Distance (m)</div>
+            <div class="label">Dystans (m)</div>
             <div class="value" id="live-distance">0</div>
           </div>
           <div class="metric">
-            <div class="label">Pace</div>
+            <div class="label">Tempo (spm)</div>
             <div class="value" id="live-pace">--</div>
           </div>
         </div>
 
-        <div class="row" style="margin-top: 1rem">
-          <button id="start-track" class="btn">Start</button>
-          <button id="pause-track" class="btn" disabled>Pause</button>
-          <button id="stop-track" class="btn" disabled>Stop & Save</button>
+        <div class="metric big-metric" style="margin-top: 15px">
+          <div class="label">Czas Trwania</div>
+          <div class="value" id="live-time">00:00:00</div>
         </div>
 
-        <label style="display: block; margin-top: 10px"
-          ><input id="use-gps" type="checkbox" /> Use GPS (battery)</label
-        >
+        <div class="row" style="margin-top: 1.5rem">
+          <button id="start-track" class="btn primary-action">Start</button>
+          <button id="pause-track" class="btn" disabled>Pauza</button>
+          <button id="stop-track" class="btn secondary-btn" disabled>
+            Zapisz & Stop
+          </button>
+        </div>
+
+        <p class="muted" style="margin-top: 15px">
+          <span id="geo-status">Oczekuje na geolokalizację...</span>
+        </p>
       </div>
     </div>
   </body>

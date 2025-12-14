@@ -4,6 +4,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const list = document.getElementById("sessions-list");
   const sessions = await storage.getSessions();
   list.innerHTML = "";
+
   sessions
     .sort((a, b) => b.ts - a.ts)
     .forEach((s) => {
@@ -25,6 +26,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     a.click();
   });
 
+  // Obsługa czyszczenia danych
   document.getElementById("clear-data").addEventListener("click", () => {
     if (confirm("Clear local sessions?")) {
       indexedDB.deleteDatabase("pedometer-db");
@@ -38,20 +40,41 @@ document.addEventListener("DOMContentLoaded", async () => {
     const d = new Date(s.ts).toISOString().split("T")[0];
     map[d] = (map[d] || 0) + s.steps;
   });
+
+  drawHistoryChart(map);
+});
+
+function drawHistoryChart(map) {
   const canvas = document.getElementById("history-chart");
+  if (!canvas) return;
+
   const ctx = canvas.getContext("2d");
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  const keys = Object.keys(map).sort().slice(-14);
+
+  const accentColor = getComputedStyle(document.documentElement)
+    .getPropertyValue("--accent")
+    .trim();
+  const mutedColor = getComputedStyle(document.documentElement)
+    .getPropertyValue("--muted")
+    .trim();
+
+  const keys = Object.keys(map).sort().slice(-14); // Pokaż ostatnie 14 dni
   const vals = keys.map((k) => map[k] || 0);
   const max = Math.max(500, ...vals);
-  const w = canvas.width / Math.max(1, keys.length);
-  ctx.fillStyle = "#4CAF50";
-  vals.forEach((v, i) => {
-    const h = (canvas.height - 20) * (v / max);
-    ctx.fillRect(i * w + 6, canvas.height - 10 - h, w - 10, h);
-    ctx.fillStyle = "#000";
-    ctx.font = "10px sans-serif";
-    ctx.fillText(keys[i].slice(5), i * w + 6, canvas.height - 2);
-    ctx.fillStyle = "#4CAF50";
+  const w = canvas.width / (keys.length + 1);
+  const h = canvas.height;
+
+  ctx.font = "10px Inter";
+
+  keys.forEach((k, i) => {
+    const val = vals[i];
+    const barH = (val / max) * (h - 20);
+
+    ctx.fillStyle = accentColor || "#1e88e5";
+    ctx.fillRect(w * i + 10, h - barH, w * 0.7, barH);
+
+    ctx.fillStyle = mutedColor || "#6272a4";
+    const day = k.split("-")[2];
+    ctx.fillText(day, w * i + 10 + w * 0.35, h - 5);
   });
-});
+}

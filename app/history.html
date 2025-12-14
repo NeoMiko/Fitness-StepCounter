@@ -13,18 +13,29 @@
 
   <body>
     <nav>
-      <a href="index.html">Home</a> | <a href="dashboard.html">Dashboard</a> |
-      <a href="tracker.html">Tracker</a>
+      <a href="index.html">🏠 Home</a>
+      <a href="dashboard.html">📊 Dashboard</a>
+      <a href="tracker.html">▶️ Tracker</a>
+      <a href="settings.html">⚙️ Settings</a>
     </nav>
 
     <div class="container">
-      <h1>History</h1>
-      <div class="card">
-        <canvas id="history-chart" width="320" height="140"></canvas>
+      <h1>⏳ Historia Sesji</h1>
+
+      <div class="card chart-card">
+        <h3>Ostatnie 14 Dni</h3>
+        <canvas id="history-chart" width="320" height="180"></canvas>
+      </div>
+
+      <div class="card sessions-card">
+        <h3>Szczegóły Sesji</h3>
         <ul id="sessions-list"></ul>
-        <div class="row">
-          <button id="export-data" class="btn">Export JSON</button>
-          <button id="clear-data" class="btn">Clear Data</button>
+
+        <div class="row action-row" style="margin-top: 15px">
+          <button id="export-data" class="btn">💾 Export JSON</button>
+          <button id="clear-data" class="btn secondary-btn">
+            🗑️ Wyczyść Historię
+          </button>
         </div>
       </div>
     </div>
