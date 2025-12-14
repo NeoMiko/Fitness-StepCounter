@@ -11,9 +11,20 @@ document.addEventListener("DOMContentLoaded", async () => {
     console.warn("IndexedDB not available, using localStorage only");
   }
 
+  document.getElementById("logout-btn")?.addEventListener("click", () => {
+    if (confirm("Czy na pewno chcesz się wylogować?")) {
+      localStorage.removeItem("pedometer.userId");
+      localStorage.removeItem("pedometer.username");
+
+      window.location.href = "/login.html";
+    }
+  });
+
+  const initialTheme =
+    document.documentElement.getAttribute("data-theme") || "light";
+
   function applyTheme(theme) {
     document.documentElement.setAttribute("data-theme", theme);
-
     if (theme === "dark") {
       textEl.textContent = "Light Mode";
       iconEl.textContent = "☀️";
@@ -25,8 +36,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   }
 
-  const initialTheme =
-    document.documentElement.getAttribute("data-theme") || "light";
   applyTheme(initialTheme);
 
   btn.addEventListener("click", async () => {
@@ -35,7 +44,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     const next = current === "dark" ? "light" : "dark";
 
     applyTheme(next);
-
     localStorage.setItem("pedometer.theme", next);
 
     if (storage) {
@@ -56,10 +64,12 @@ document.addEventListener("DOMContentLoaded", async () => {
     );
     alert("Goal saved");
   };
+
   document.getElementById("clear-storage").onclick = () => {
     if (confirm("Clear all local data?")) {
       indexedDB.deleteDatabase("pedometer-db");
       localStorage.removeItem("pedometer.userId");
+      localStorage.removeItem("pedometer.username");
       alert("Cleared");
     }
   };

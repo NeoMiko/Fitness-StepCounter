@@ -23,10 +23,36 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   let userId = localStorage.getItem("pedometer.userId");
-  if (!userId) {
-    userId = crypto.randomUUID();
-    localStorage.setItem("pedometer.userId", userId);
+  let username = localStorage.getItem("pedometer.username");
+
+  const currentPath = window.location.pathname;
+
+  if (!userId || !username) {
+    if (
+      !currentPath.includes("/login.html") &&
+      !currentPath.endsWith("/") &&
+      !currentPath.endsWith("/index.html")
+    ) {
+      window.location.href = "/login.html";
+      return;
+    }
+  } else if (currentPath.includes("/login.html")) {
+    window.location.href = "/dashboard.html";
+    return;
   }
 
-  window.APP_CONTEXT = { userId };
+  window.APP_CONTEXT = {
+    userId: userId,
+    username: username,
+  };
+
+  const userEl = document.getElementById("user-welcome");
+  if (userEl && username) {
+    userEl.textContent = `Witaj, ${username}!`;
+  }
+
+  const idEl = document.getElementById("user-id-display");
+  if (idEl && userId) {
+    idEl.textContent = `ID Użytkownika: ${userId.substring(0, 8)}...`;
+  }
 });

@@ -39,14 +39,30 @@ document.addEventListener("DOMContentLoaded", async () => {
     const r = await fetch("/.netlify/functions/getRanking");
     const rows = await r.json();
     const ul = document.getElementById("leaderboard");
-    ul.innerHTML = "";
-    rows.forEach((entry) => {
-      const li = document.createElement("li");
-      li.textContent = `${entry.username || entry.user_id}: ${
-        entry.steps_today
-      } steps`;
-      ul.appendChild(li);
-    });
+    if (ul) ul.innerHTML = "";
+    rows
+      .sort((a, b) => b.steps_today - a.steps_today)
+      .forEach((entry, index) => {
+        const li = document.createElement("li");
+
+        const isCurrentUser = entry.user_id === window.APP_CONTEXT.userId;
+
+        let content = `${index + 1}. ${entry.username || "Anonim"}: ${
+          entry.steps_today
+        } steps`;
+
+        if (isCurrentUser) {
+          content += " (Ty)";
+          li.style.fontWeight = "bold";
+          const accentColor = getComputedStyle(document.documentElement)
+            .getPropertyValue("--accent")
+            .trim();
+          li.style.color = accentColor;
+        }
+
+        li.textContent = content;
+        ul.appendChild(li);
+      });
   } catch (e) {
     console.warn("ranking error", e);
   }
