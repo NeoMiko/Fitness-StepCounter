@@ -1,29 +1,36 @@
-(function applyThemeImmediately() {
-  const theme = localStorage.getItem("theme") || "light";
-  document.documentElement.setAttribute("data-theme", theme);
-})();
-
-import { storage } from "./storage-facade.js";
-(async function enhanceTheme() {
-  try {
-    const saved = await storage.getMeta("theme");
-    if (saved) {
-      document.documentElement.setAttribute("data-theme", saved);
-      localStorage.setItem("theme", saved);
-    }
-  } catch {}
-})();
-
 document.addEventListener("DOMContentLoaded", () => {
-  if ("serviceWorker" in navigator) {
-    navigator.serviceWorker.register("/service-worker.js");
+  const savedTheme = localStorage.getItem("pedometer.theme");
+  if (savedTheme === "dark") {
+    document.documentElement.classList.add("dark-theme");
+  } else {
+    document.documentElement.classList.remove("dark-theme");
   }
 
-  let userId = localStorage.getItem("userId");
-  if (!userId) {
-    userId = crypto.randomUUID();
-    localStorage.setItem("userId", userId);
-  }
+  const installButton = document.getElementById("install");
+  let deferredPrompt;
 
-  window.APP_CONTEXT = { userId };
+  window.addEventListener("beforeinstallprompt", (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    if (installButton) {
+      installButton.style.display = "block";
+    }
+  });
+
+  if (installButton) {
+    installButton.addEventListener("click", () => {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then((choiceResult) => {
+          if (choiceResult.outcome === "accepted") {
+            console.log("User accepted the install prompt");
+          } else {
+            console.log("User dismissed the install prompt");
+          }
+          deferredPrompt = null;
+          installButton.style.display = "none";
+        });
+      }
+    });
+  }
 });

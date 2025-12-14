@@ -1,55 +1,29 @@
-document.addEventListener("DOMContentLoaded", async () => {
-  const btn = document.getElementById("theme-toggle");
-  const textEl = btn.querySelector(".toggle-text");
-  const iconEl = btn.querySelector(".toggle-icon");
+const themeToggle = document.getElementById("theme-toggle");
 
-  let storage = null;
-  try {
-    const mod = await import("./storage-facade.js");
-    storage = mod.storage;
-  } catch (err) {
-    console.warn("IndexedDB not available, using localStorage only");
-  }
+const applyTheme = (isDarkMode) => {
+  document.documentElement.classList.toggle("dark-theme", isDarkMode);
 
-  function applyTheme(theme) {
-    document.documentElement.setAttribute("data-theme", theme);
+  themeToggle.querySelector(".toggle-icon").textContent = isDarkMode
+    ? "☀️"
+    : "🌙";
+  themeToggle.querySelector(".toggle-text").textContent = isDarkMode
+    ? "Light Mode"
+    : "Dark Mode";
+  themeToggle.setAttribute("aria-checked", isDarkMode);
+};
 
-    if (theme === "dark") {
-      textEl.textContent = "Light Mode";
-      iconEl.textContent = "☀️";
-    } else {
-      textEl.textContent = "Dark Mode";
-      iconEl.textContent = "🌙";
-    }
-  }
+document.addEventListener("DOMContentLoaded", () => {
+  const savedTheme = localStorage.getItem("pedometer.theme");
+  const isDarkMode = savedTheme === "dark";
+  applyTheme(isDarkMode);
+});
 
-  async function loadTheme() {
-    let theme = localStorage.getItem("theme") || "light";
+themeToggle.addEventListener("click", () => {
+  const isCurrentlyDark =
+    document.documentElement.classList.contains("dark-theme");
+  const newDarkModeState = !isCurrentlyDark;
 
-    if (storage) {
-      try {
-        theme = (await storage.getMeta("theme")) || theme;
-      } catch {}
-    }
+  localStorage.setItem("pedometer.theme", newDarkModeState ? "dark" : "light");
 
-    applyTheme(theme);
-  }
-
-  btn.addEventListener("click", async () => {
-    const current =
-      document.documentElement.getAttribute("data-theme") || "light";
-
-    const next = current === "dark" ? "light" : "dark";
-
-    applyTheme(next);
-    localStorage.setItem("theme", next);
-
-    if (storage) {
-      try {
-        await storage.setMeta("theme", next);
-      } catch {}
-    }
-  });
-
-  loadTheme();
+  applyTheme(newDarkModeState);
 });

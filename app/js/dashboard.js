@@ -1,4 +1,4 @@
-import { storage } from "./storage-facade.js";
+import * as storage from "./storage-facade.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
   const goal = Number(localStorage.getItem("pedometer.goal") || 5000);

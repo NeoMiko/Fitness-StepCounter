@@ -1,3 +1,4 @@
+import { IDB } from "./idb-helpers.js";
 async function saveDaily(dateStr, steps) {
   return await IDB.put("daily", { date: dateStr, steps });
 }
