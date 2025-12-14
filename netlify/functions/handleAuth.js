@@ -47,6 +47,9 @@ exports.handler = async (event) => {
 
     return {
       statusCode: 200,
+      headers: {
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify({
         success: true,
         userId: userId,
@@ -57,6 +60,9 @@ exports.handler = async (event) => {
     console.error("Błąd bazy danych w handleAuth:", error);
     return {
       statusCode: 500,
+      headers: {
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify({
         success: false,
         message: "Wewnętrzny błąd serwera/bazy danych.",

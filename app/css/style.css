@@ -189,3 +189,50 @@ label {
   font-size: 1rem;
   line-height: 1;
 }
+.welcome-container {
+  max-width: 400px;
+  margin: 60px auto 20px auto;
+  padding: 0 15px;
+}
+
+.auth-card {
+  text-align: center;
+}
+
+.auth-card label {
+  display: block;
+  text-align: left;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.auth-card input[type="text"] {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  background-color: var(--background-input);
+  color: var(--text-color);
+}
+
+.auth-card .btn {
+  width: 100%;
+  padding: 12px;
+  font-size: 1.1em;
+}
+
+.auth-card h1 {
+  font-size: 1.8em;
+  margin-bottom: 10px;
+}
+
+#auth-status {
+  min-height: 20px;
+}
+
+@media (max-width: 450px) {
+  .welcome-container {
+    margin-top: 20px;
+  }
+}

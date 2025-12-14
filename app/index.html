@@ -3,36 +3,53 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Step Tracker PWA</title>
+    <title>Logowanie / Rejestracja</title>
+
     <link rel="manifest" href="/manifest.webmanifest" />
+
     <link rel="stylesheet" href="css/style.css" />
-    <script type="module" src="js/main.js"></script>
+
+    <script type="module" src="js/login.js"></script>
   </head>
   <body>
-    <nav>
-      <a href="dashboard.html">📊 Dashboard</a>
-      <a href="tracker.html">▶️ Tracker</a>
-      <a href="history.html">⏳ History</a>
-      <a href="settings.html">⚙️ Settings</a>
-    </nav>
-
     <div class="container welcome-container">
-      <h1>Step Tracker PWA</h1>
-      <p class="muted" style="margin-bottom: 30px; font-size: 16px">
-        Zainstaluj aplikację na swoim urządzeniu. Śledź kroki, dystans i
-        synchronizuj dane z chmurą.
-      </p>
+      <section class="card auth-card">
+        <h1 style="margin-top: 0">👋 Witamy w Step Tracker</h1>
 
-      <div class="row" style="gap: 15px">
-        <a href="dashboard.html" class="btn">Otwórz Dashboard</a>
-        <a href="tracker.html" class="btn primary-action"
-          >Rozpocznij Tracking</a
+        <p class="muted" style="margin-bottom: 20px">
+          Podaj swoją nazwę użytkownika, aby kontynuować i dołączyć do rankingu.
+        </p>
+
+        <form id="auth-form">
+          <label for="username-input" class="input-label"
+            >Nazwa użytkownika (Login):</label
+          >
+
+          <input
+            id="username-input"
+            type="text"
+            placeholder="Wprowadź unikalną nazwę"
+            required
+            minlength="3"
+            class="full-width-input"
+          />
+
+          <div style="margin-top: 1.5rem">
+            <button id="login-btn" type="submit" class="btn primary-action">
+              🚀 Zaloguj / Zarejestruj
+            </button>
+          </div>
+        </form>
+
+        <p
+          class="muted"
+          style="margin-top: 20px; font-size: 0.9em"
+          id="auth-status"
         >
-      </div>
-
-      <p class="muted" style="margin-top: 20px">
-        Działa offline. Rekomendowana dla Chrome/Edge na Androidzie/PC.
-      </p>
+          Użyj istniejącej nazwy, aby się zalogować. Nowe nazwy zostaną
+          zarejestrowane.
+        </p>
+      </section>
     </div>
   </body>
 </html>
