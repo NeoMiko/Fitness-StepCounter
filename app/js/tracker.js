@@ -1,3 +1,5 @@
+import { storage } from "./storage-facade.js";
+
 let running = false,
   stepCount = 0,
   lastStep = 0,

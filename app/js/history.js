@@ -1,3 +1,5 @@
+import { storage } from "./storage-facade.js";
+
 document.addEventListener("DOMContentLoaded", async () => {
   const list = document.getElementById("sessions-list");
   const sessions = await storage.getSessions();

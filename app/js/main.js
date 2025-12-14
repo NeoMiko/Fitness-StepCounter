@@ -3,7 +3,7 @@
   document.documentElement.setAttribute("data-theme", theme);
 })();
 
-import { storage } from "./storage-facade";
+import { storage } from "./storage-facade.js";
 (async function enhanceTheme() {
   try {
     const saved = await storage.getMeta("theme");
