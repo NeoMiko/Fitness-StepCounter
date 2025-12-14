@@ -1,36 +1,24 @@
-const { Client } = require("pg");
+const { neon } = require("@neondatabase/serverless");
 
 exports.handler = async () => {
   const today = new Date().toISOString().split("T")[0];
 
-  const client = new Client({
-    connectionString: process.env.NETLIFY_DATABASE_URL,
-  });
+  const sql = neon(process.env.NETLIFY_DATABASE_URL);
 
   try {
-    await client.connect();
-    const query = `
+    const rankingData = await sql`
             SELECT
                 u.user_id,
                 u.username,
-                ds.steps AS steps_today
+                COALESCE(ds.steps, 0) AS steps_today  -- COALESCE zwraca 0, jeśli kroki są NULL
             FROM 
                 users u
             LEFT JOIN 
                 daily_steps ds 
-                ON u.user_id = ds.user_id AND ds.date = $1
+                ON u.user_id = ds.user_id AND ds.date = ${today}
             ORDER BY
-                steps_today DESC NULLS LAST, u.username ASC
+                steps_today DESC, u.username ASC
         `;
-
-    const result = await client.query(query, [today]);
-    await client.end();
-
-    const rankingData = result.rows.map((row) => ({
-      user_id: row.user_id,
-      username: row.username,
-      steps_today: row.steps_today || 0,
-    }));
 
     return {
       statusCode: 200,
@@ -40,7 +28,6 @@ exports.handler = async () => {
       body: JSON.stringify(rankingData),
     };
   } catch (error) {
-    await client.end();
     console.error("Błąd bazy danych w getRanking:", error);
     return {
       statusCode: 500,

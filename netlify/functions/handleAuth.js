@@ -1,11 +1,20 @@
-const { Client } = require("pg");
+const { neon } = require("@neondatabase/serverless");
 
 exports.handler = async (event) => {
   if (event.httpMethod !== "POST") {
     return { statusCode: 405, body: "Method Not Allowed" };
   }
 
-  const { username } = JSON.parse(event.body);
+  let username;
+  try {
+    const body = JSON.parse(event.body);
+    username = body.username;
+  } catch (e) {
+    return {
+      statusCode: 400,
+      body: JSON.stringify({ success: false, message: "Invalid JSON body." }),
+    };
+  }
 
   if (!username || username.length < 3) {
     return {
@@ -17,32 +26,24 @@ exports.handler = async (event) => {
     };
   }
 
-  const client = new Client({
-    connectionString: process.env.NETLIFY_DATABASE_URL,
-  });
+  const sql = neon(process.env.NETLIFY_DATABASE_URL);
 
   try {
-    await client.connect();
-
-    let result = await client.query(
-      "SELECT user_id, username FROM users WHERE username = $1",
-      [username]
-    );
+    let result =
+      await sql`SELECT user_id, username FROM users WHERE username = ${username}`;
 
     let userId;
 
-    if (result.rows.length > 0) {
-      userId = result.rows[0].user_id;
+    if (result.length > 0) {
+      userId = result[0].user_id;
     } else {
-      const newId = `usr_${crypto.randomUUID()}`;
-      await client.query(
-        "INSERT INTO users (user_id, username) VALUES ($1, $2)",
-        [newId, username]
-      );
+      const newId = `usr_${Date.now()}_${Math.random()
+        .toString(36)
+        .substring(2, 9)}`;
+
+      await sql`INSERT INTO users (user_id, username) VALUES (${newId}, ${username})`;
       userId = newId;
     }
-
-    await client.end();
 
     return {
       statusCode: 200,
@@ -53,13 +54,12 @@ exports.handler = async (event) => {
       }),
     };
   } catch (error) {
-    await client.end();
     console.error("Błąd bazy danych w handleAuth:", error);
     return {
       statusCode: 500,
       body: JSON.stringify({
         success: false,
-        message: "Błąd serwera. Sprawdź logs Netlify.",
+        message: "Wewnętrzny błąd serwera/bazy danych.",
       }),
     };
   }
