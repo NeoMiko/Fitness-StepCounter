@@ -37,6 +37,10 @@ async function getMeta(k) {
   return r ? r.v : null;
 }
 
+async function getAll(storeName) {
+  return await IDB.getAll(storeName);
+}
+
 export const storage = {
   saveDaily,
   getDaily,
@@ -47,4 +51,5 @@ export const storage = {
   deleteQueued,
   setMeta,
   getMeta,
+  getAll,
 };
