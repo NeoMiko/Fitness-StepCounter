@@ -1,5 +1,5 @@
 import { createPool } from "@neondatabase/serverless";
-const pool = createPool({ connectionString: process.env.NEON_DATABASE_URL });
+const pool = createPool({ connectionString: process.env.NETLIFY_DATABASE_URL });
 
 export async function handler(event) {
   try {
