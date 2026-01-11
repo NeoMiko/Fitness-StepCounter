@@ -10,14 +10,16 @@ export async function handler(event) {
       INSERT INTO rankings (user_id, username, date, steps_today)
       VALUES ($1, $2, $3, $4)
       ON CONFLICT (user_id, date) DO UPDATE
-      SET username = EXCLUDED.username,
-          steps_today = EXCLUDED.steps_today
+      SET username = COALESCE(EXCLUDED.username, rankings.username),
+        steps_today = EXCLUDED.steps_today,
+        created_at = CURRENT_TIMESTAMP
       RETURNING *
     `;
     const vals = [d.userId, d.username || null, d.date, d.stepsToday || 0];
     const res = await pool.query(sql, vals);
     return {
       statusCode: 200,
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ ok: true, row: res.rows[0] }),
     };
   } catch (err) {
