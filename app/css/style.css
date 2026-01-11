@@ -46,23 +46,31 @@ nav {
   top: 0;
   left: 0;
   right: 0;
-  background: var(--card);
-  padding: 10px 12px;
-  display: flex;
-  gap: 8px;
-  justify-content: center;
+
   box-shadow: 0 2px 8px var(--shadow);
   z-index: 40;
 }
-nav a {
-  color: var(--text);
-  text-decoration: none;
-  padding: 8px;
-  border-radius: 8px;
-  transition: background-color 0.2s;
+
+.main-nav {
+  display: flex;
+  justify-content: space-around;
+  padding: 0.6rem;
+  background: var(--card-bg);
 }
-nav a:hover {
-  background-color: color-mix(in srgb, var(--card) 90%, var(--accent));
+
+.main-nav a {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  text-decoration: none;
+  color: var(--text-color);
+  font-size: 0.8rem;
+}
+
+.main-nav i {
+  font-size: 1.2rem;
+  color: var(--accent);
 }
 .container {
   width: min(480px, 94%);

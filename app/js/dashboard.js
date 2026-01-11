@@ -37,6 +37,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   // Obsługa rankingu
   try {
     const r = await fetch("/.netlify/functions/getRanking");
+    if (!r.ok) throw new Error("Serwer zwrócił błąd 500");
     const rows = await r.json();
     const ul = document.getElementById("leaderboard");
     if (ul) ul.innerHTML = "";
