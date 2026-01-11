@@ -15,8 +15,7 @@ const ASSETS = [
   "/js/dashboard.js",
   "/js/history.js",
   "/manifest.webmanifest",
-  "/icons/icon-192.png",
-  "/icons/icon-512.png",
+  "/icons/icon.png",
   "/data/offline-weather.json",
   "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css",
 ];
