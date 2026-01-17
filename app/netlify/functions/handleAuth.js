@@ -1,19 +1,19 @@
-import { neon } from "@neondatabase/serverless";
+const { neon } = require("@neondatabase/serverless");
 
-export async function handler(event) {
+exports.handler = async (event) => {
+  const headers = {
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Headers": "Content-Type",
+    "Access-Control-Allow-Methods": "POST, OPTIONS",
+    "Content-Type": "application/json",
+  };
+
   if (event.httpMethod === "OPTIONS") {
-    return {
-      statusCode: 200,
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Headers": "Content-Type",
-        "Access-Control-Allow-Methods": "POST, OPTIONS",
-      },
-    };
+    return { statusCode: 200, headers };
   }
 
   if (event.httpMethod !== "POST") {
-    return { statusCode: 405, body: "Method Not Allowed" };
+    return { statusCode: 405, headers, body: "Method Not Allowed" };
   }
 
   let username;
@@ -23,7 +23,7 @@ export async function handler(event) {
   } catch (e) {
     return {
       statusCode: 400,
-      headers: { "Content-Type": "application/json" },
+      headers,
       body: JSON.stringify({ success: false, message: "Invalid JSON body." }),
     };
   }
@@ -31,9 +31,9 @@ export async function handler(event) {
   if (!username || username.length < 3) {
     return {
       statusCode: 400,
-      headers: { "Content-Type": "application/json" },
+      headers,
       body: JSON.stringify({
-        success: true,
+        success: false,
         message: "Nazwa użytkownika jest za krótka.",
       }),
     };
@@ -61,10 +61,7 @@ export async function handler(event) {
 
     return {
       statusCode: 200,
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*",
-      },
+      headers,
       body: JSON.stringify({
         success: true,
         userId: userId,
@@ -75,10 +72,7 @@ export async function handler(event) {
     console.error("Błąd bazy danych w handleAuth:", error);
     return {
       statusCode: 500,
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*",
-      },
+      headers,
       body: JSON.stringify({
         success: false,
         message: "Wewnętrzny błąd serwera/bazy danych.",
@@ -86,4 +80,4 @@ export async function handler(event) {
       }),
     };
   }
-}
+};

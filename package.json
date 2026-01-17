@@ -1,7 +1,6 @@
 {
   "name": "ultimate-step-counter",
   "version": "1.0.0",
-  "type": "module",
   "description": "",
   "main": "service-worker.js",
   "scripts": {
@@ -14,6 +13,7 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "type": "commonjs",
   "bugs": {
     "url": "https://github.com/NeoMiko/Fitness-StepCounter/issues"
   },
