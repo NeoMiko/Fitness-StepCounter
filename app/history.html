@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html lang="pl">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>History</title>
+    <title>Historia - Ultimate Step Counter</title>
 
     <link
       rel="stylesheet"
@@ -11,35 +11,58 @@
     />
     <link rel="manifest" href="/manifest.webmanifest" />
     <link rel="stylesheet" href="css/style.css" />
+
     <script type="module" src="js/main.js"></script>
     <script type="module" src="js/history.js"></script>
   </head>
 
   <body>
     <nav class="main-nav">
-      <a href="dashboard.html"
-        ><i class="fa-solid fa-chart-simple"></i> Dashboard</a
-      >
-      <a href="tracker.html"><i class="fa-solid fa-play"></i> Tracker</a>
-      <a href="settings.html"><i class="fa-solid fa-gear"></i> Settings</a>
+      <a href="dashboard.html">
+        <i class="fa-solid fa-house"></i> <span>Home</span>
+      </a>
+      <a href="tracker.html">
+        <i class="fa-solid fa-person-walking"></i> <span>Tracker</span>
+      </a>
+      <a href="history.html" class="active">
+        <i class="fa-solid fa-clock-rotate-left"></i> <span>Historia</span>
+      </a>
+      <a href="settings.html">
+        <i class="fa-solid fa-gear"></i> <span>Opcje</span>
+      </a>
     </nav>
 
     <div class="container">
       <h1>Historia Sesji</h1>
 
       <div class="card chart-card">
-        <h3>Ostatnie 14 Dni</h3>
+        <h3><i class="fa-solid fa-chart-line"></i> Ostatnie 14 Dni</h3>
         <canvas id="history-chart" width="320" height="180"></canvas>
       </div>
 
       <div class="card sessions-card">
-        <h3>Szczegóły Sesji</h3>
-        <ul id="sessions-list"></ul>
+        <h3><i class="fa-solid fa-list-ul"></i> Szczegóły Sesji</h3>
+        <ul id="sessions-list" class="activity-list">
+          <li class="muted">Ładowanie aktywności...</li>
+        </ul>
 
-        <div class="row action-row" style="margin-top: 15px">
-          <button id="export-data" class="btn">Export JSON</button>
-          <button id="clear-data" class="btn secondary-btn">
-            Wyczyść Historię
+        <div
+          class="row action-row"
+          style="
+            margin-top: 20px;
+            border-top: 1px solid var(--border);
+            padding-top: 15px;
+          "
+        >
+          <button id="export-data" class="btn">
+            <i class="fa-solid fa-download"></i> Export JSON
+          </button>
+          <button
+            id="clear-data"
+            class="btn secondary-btn"
+            style="background-color: #ef4444; color: white"
+          >
+            <i class="fa-solid fa-trash-can"></i> Wyczyść Historię
           </button>
         </div>
       </div>
