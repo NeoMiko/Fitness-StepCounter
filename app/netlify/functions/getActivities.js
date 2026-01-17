@@ -1,4 +1,4 @@
-const { createPool } = require("@neondatabase/serverless");
+const { Pool } = require("@neondatabase/serverless");
 
 exports.handler = async (event) => {
   const headers = {
@@ -12,11 +12,13 @@ exports.handler = async (event) => {
     return { statusCode: 200, headers };
   }
 
+  // Zabezpieczenie przed brakiem userId
   const userId = event.queryStringParameters?.userId || "anon";
 
   try {
     const connectionString = `${process.env.NETLIFY_DATABASE_URL}?sslmode=require`;
-    const pool = createPool({ connectionString });
+
+    const pool = new Pool({ connectionString });
 
     const sql = `
       SELECT id, ts, steps, distance, pace, weather 
@@ -27,6 +29,8 @@ exports.handler = async (event) => {
     `;
 
     const res = await pool.query(sql, [userId]);
+
+    await pool.end();
 
     return {
       statusCode: 200,

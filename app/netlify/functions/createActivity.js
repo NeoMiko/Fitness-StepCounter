@@ -1,4 +1,4 @@
-const { createPool } = require("@neondatabase/serverless");
+const { Pool } = require("@neondatabase/serverless");
 
 exports.handler = async (event) => {
   const headers = {
@@ -18,9 +18,8 @@ exports.handler = async (event) => {
 
     const data = JSON.parse(event.body);
 
-    const pool = createPool({
-      connectionString: `${process.env.NETLIFY_DATABASE_URL}?sslmode=require`,
-    });
+    const connectionString = `${process.env.NETLIFY_DATABASE_URL}?sslmode=require`;
+    const pool = new Pool({ connectionString });
 
     const insertSQL = `
       INSERT INTO activities (user_id, ts, steps, distance, pace, weather)
@@ -38,6 +37,8 @@ exports.handler = async (event) => {
     ];
 
     const res = await pool.query(insertSQL, values);
+
+    await pool.end();
 
     return {
       statusCode: 200,

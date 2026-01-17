@@ -1,4 +1,4 @@
-const { createPool } = require("@neondatabase/serverless");
+const { Pool } = require("@neondatabase/serverless");
 
 exports.handler = async (event) => {
   const headers = {
@@ -13,7 +13,8 @@ exports.handler = async (event) => {
 
   try {
     const connectionString = `${process.env.NETLIFY_DATABASE_URL}?sslmode=require`;
-    const pool = createPool({ connectionString });
+
+    const pool = new Pool({ connectionString });
 
     const user = event.queryStringParameters?.user || null;
 
@@ -22,6 +23,8 @@ exports.handler = async (event) => {
       : "SELECT * FROM activities ORDER BY ts DESC LIMIT 200";
 
     const res = await pool.query(sql, user ? [user] : []);
+
+    await pool.end();
 
     return {
       statusCode: 200,

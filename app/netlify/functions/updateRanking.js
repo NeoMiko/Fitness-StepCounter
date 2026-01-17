@@ -1,4 +1,4 @@
-const { createPool } = require("@neondatabase/serverless");
+const { Pool } = require("@neondatabase/serverless");
 
 exports.handler = async (event) => {
   const headers = {
@@ -17,12 +17,11 @@ exports.handler = async (event) => {
     }
 
     const d = JSON.parse(event.body);
-
-    // Jeśli userId nie istnieje lub jest pusty, przypisujemy "anon"
     const finalUserId = d.userId && d.userId !== "" ? d.userId : "anon";
 
-    const connectionString = `${process.env.NETLIFY_DATABASE_URL}?sslmode=require`;
-    const pool = createPool({ connectionString });
+    const pool = new Pool({
+      connectionString: `${process.env.NETLIFY_DATABASE_URL}?sslmode=require`,
+    });
 
     const sql = `
       INSERT INTO rankings (user_id, username, date, steps_today)
@@ -42,6 +41,8 @@ exports.handler = async (event) => {
     ];
 
     const res = await pool.query(sql, vals);
+
+    await pool.end();
 
     return {
       statusCode: 200,
