@@ -72,6 +72,7 @@ saveBtn.onclick = async () => {
     username: localStorage.getItem("username") || "User",
     date: today,
     stepsToday: steps,
+    distance: parseFloat(((steps * STEP_LENGTH) / 1000).toFixed(2)), // Zapisujemy dystans online
   };
 
   try {
