@@ -1,15 +1,16 @@
 <!DOCTYPE html>
-<html>
+<html lang="pl">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Tracker</title>
+    <title>Tracker - Live</title>
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
     />
     <link rel="manifest" href="/manifest.webmanifest" />
     <link rel="stylesheet" href="css/style.css" />
+
     <script defer src="js/worker-rpm.js"></script>
     <script type="module" src="js/main.js"></script>
     <script type="module" src="js/tracker.js"></script>
@@ -17,10 +18,17 @@
   <body>
     <nav class="main-nav">
       <a href="dashboard.html"
-        ><i class="fa-solid fa-chart-simple"></i> Dashboard</a
+        ><i class="fa-solid fa-house"></i> <span>Home</span></a
       >
-      <a href="history.html"><i class="fa-solid fa-play"></i> History</a>
-      <a href="settings.html"><i class="fa-solid fa-gear"></i> Settings</a>
+      <a href="tracker.html" class="active"
+        ><i class="fa-solid fa-person-walking"></i> <span>Tracker</span></a
+      >
+      <a href="history.html"
+        ><i class="fa-solid fa-clock-rotate-left"></i> <span>Historia</span></a
+      >
+      <a href="settings.html"
+        ><i class="fa-solid fa-gear"></i> <span>Opcje</span></a
+      >
     </nav>
 
     <div class="container">
@@ -29,13 +37,13 @@
       <div class="card live-metrics">
         <div class="metric big-metric">
           <div class="label">Kroki w Sesji</div>
-          <div class="value big" id="live-steps">0</div>
+          <div class="value big" id="steps">0</div>
         </div>
 
         <div class="row stats-row">
           <div class="metric">
-            <div class="label">Dystans (m)</div>
-            <div class="value" id="live-distance">0</div>
+            <div class="label">Dystans</div>
+            <div class="value" id="distance">0.00 km</div>
           </div>
           <div class="metric">
             <div class="label">Tempo (spm)</div>
@@ -48,11 +56,15 @@
           <div class="value" id="live-time">00:00:00</div>
         </div>
 
-        <div class="row" style="margin-top: 1.5rem">
-          <button id="start-btn" class="btn primary-action">Start</button>
-          <button id="pause-btn" class="btn" disabled>Pauza</button>
-          <button id="save-btn" class="btn secondary-btn" disabled>
-            Zapisz & Stop
+        <div class="row controls-row" style="margin-top: 1.5rem">
+          <button id="start-btn" class="btn primary-action">
+            <i class="fa-solid fa-play"></i> Start
+          </button>
+          <button id="pause-btn" class="btn hidden">
+            <i class="fa-solid fa-pause"></i> Pauza
+          </button>
+          <button id="save-btn" class="btn secondary-btn">
+            <i class="fa-solid fa-floppy-disk"></i> Zapisz & Stop
           </button>
         </div>
       </div>

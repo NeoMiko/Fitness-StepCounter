@@ -2,8 +2,9 @@ import { storage } from "./storage-facade.js";
 
 let steps = 0;
 let isRunning = false;
-let startTime = null;
-const STEP_LENGTH = 0.762;
+let lastMag = 0;
+const threshold = 11.5; // Prog czulosci acc
+const STEP_LENGTH = 0.762; // dlugosc kroku
 
 const stepsEl = document.getElementById("steps");
 const distanceEl = document.getElementById("distance");
@@ -11,79 +12,89 @@ const startBtn = document.getElementById("start-btn");
 const pauseBtn = document.getElementById("pause-btn");
 const saveBtn = document.getElementById("save-btn");
 
-// Accelerometer
-let sensor = null;
-if ("Accelerometer" in window) {
-  sensor = new Accelerometer({ frequency: 60 });
-  sensor.addEventListener("reading", () => {
-    if (!isRunning) return;
-    const magnitude = Math.sqrt(sensor.x ** 2 + sensor.y ** 2 + sensor.z ** 2);
-    if (magnitude > 12) {
-      updateSteps();
-    }
-  });
+// Funkcja liczaca kroki
+function handleMotion(event) {
+  if (!isRunning) return;
+
+  const acc = event.accelerationIncludingGravity;
+  if (!acc) return;
+
+  // Obliczamy sile acc
+  const mag = Math.sqrt(acc.x ** 2 + acc.y ** 2 + acc.z ** 2);
+
+  // Prosty filtr
+  if (mag > threshold && lastMag <= threshold) {
+    steps++;
+    updateUI();
+  }
+  lastMag = mag;
 }
 
-function updateSteps() {
-  steps++;
+function updateUI() {
   stepsEl.textContent = steps;
   const distKm = (steps * STEP_LENGTH) / 1000;
   distanceEl.textContent = distKm.toFixed(2) + " km";
 }
 
-startBtn.onclick = () => {
+startBtn.onclick = async () => {
+  // Prosba o uprawnienia
+  if (typeof DeviceMotionEvent.requestPermission === "function") {
+    const permission = await DeviceMotionEvent.requestPermission();
+    if (permission !== "granted") {
+      alert("Brak uprawnień do sensorów!");
+      return;
+    }
+  }
+
   isRunning = true;
-  startTime = startTime || Date.now();
+  window.addEventListener("devicemotion", handleMotion);
+
   startBtn.classList.add("hidden");
   pauseBtn.classList.remove("hidden");
   pauseBtn.textContent = "Pause";
-  if (sensor) sensor.start();
 };
 
 pauseBtn.onclick = () => {
   isRunning = !isRunning;
   pauseBtn.textContent = isRunning ? "Pause" : "Resume";
-  if (!isRunning && sensor) sensor.stop();
-  if (isRunning && sensor) sensor.start();
 };
 
 saveBtn.onclick = async () => {
   isRunning = false;
-  if (sensor) sensor.stop();
+  window.removeEventListener("devicemotion", handleMotion);
 
   const today = new Date().toISOString().split("T")[0];
-  const userId = window.APP_CONTEXT?.userId || "anon";
-  const username = window.APP_CONTEXT?.username || "User";
+  const userId =
+    window.APP_CONTEXT?.userId || localStorage.getItem("userId") || "anon";
 
   const payload = {
     userId: userId,
-    username: username,
+    username: localStorage.getItem("username") || "User",
     date: today,
     stepsToday: steps,
-    distance: parseFloat(distanceEl.textContent),
   };
 
   try {
-    //Zapis lokalny
+    // Zapis lokalny
     await storage.saveDaily(today, steps);
 
+    // Zapis Online
     const res = await fetch("/.netlify/functions/updateRanking", {
       method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
     });
 
     if (res.ok) {
-      alert("Activity saved successfully!");
-      window.location.href = "dashboard.html";
+      alert("Zapisano pomyślnie!");
     } else {
-      throw new Error("Server error");
+      throw new Error("Błąd serwera");
     }
   } catch (err) {
-    // 3. Jeśli offline - dodaj do kolejki synchronizacji
-    console.warn("Saving to queue...", err);
+    console.warn("Tryb offline: dodawanie do kolejki");
     await storage.queuePayload(payload);
-    if (window.registerSync) await window.registerSync("sync-ranking");
-    alert("Saved offline. Will sync when online.");
-    window.location.href = "dashboard.html";
+    alert("Zapisano lokalnie (brak połączenia).");
   }
+
+  window.location.href = "dashboard.html";
 };
